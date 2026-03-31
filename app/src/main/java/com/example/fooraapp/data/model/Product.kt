@@ -1,12 +1,24 @@
-package com.example.fooraapp.data.model
+package com.example.fooraapp.model
+
+import com.google.firebase.firestore.PropertyName
 
 data class Product(
-    val id: String = "",
-    val name: String = "",
-    val price: Double = 0.0,
-    val mainImageUrl: String = "",          // Ảnh đại diện món ăn
-    val subImages: List<String> = emptyList(), // Danh sách ảnh chi tiết (Slide show)
-    val category: String = "",              // Danh mục (Pizza, Burger...)
-    val description: String = "",           // Mô tả món ăn
-    val searchKeywords: List<String> = emptyList() // Các từ khóa để tìm kiếm nhanh
+    val id          : String       = "",
+    val name        : String       = "",
+    val description : String       = "",
+    val price       : Long         = 0,
+    val category    : String       = "",
+
+    // Firestore dùng "mainImageUrl" — map đúng tên field
+    @get:PropertyName("mainImageUrl")
+    @set:PropertyName("mainImageUrl")
+    var mainImageUrl: String       = "",
+
+    val searchKeywords: List<String> = emptyList(),
+    val subImages     : List<String> = emptyList(),
+
+    // Các field UI — không lưu trên Firestore, dùng default
+    val rating      : Float  = 4.8f,
+    val deliveryTime: String = "20-30 phút",
+    val isPopular   : Boolean = false
 )
