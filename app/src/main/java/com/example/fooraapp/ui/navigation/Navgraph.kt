@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.fooraapp.ui.screens.auth.LoginScreen
 import com.example.fooraapp.ui.screens.auth.RegisterScreen
+import com.example.fooraapp.ui.screens.home.HomeScreen
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
@@ -30,12 +31,7 @@ fun SetupNavGraph(navController: NavHostController) {
 
         // Màn hình trang chủ (Home)
         composable("home_screen") {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Chào mừng đến với Trang Chủ FooraApp!")
-            }
+            HomeScreen(navController = navController)
         }
     }
 }
