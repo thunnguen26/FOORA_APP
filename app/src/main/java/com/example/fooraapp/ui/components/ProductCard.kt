@@ -1,4 +1,4 @@
-package com.example.fooraapp.ui.screens.home.components
+package com.example.fooraapp.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,12 +23,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.SubcomposeAsyncImage
-import com.example.fooraapp.model.Product
+import com.example.fooraapp.data.model.Product
 import com.example.fooraapp.ui.theme.*   // ← import màu từ theme
 
 @Composable
-fun ProductCard(product: Product, onClick: () -> Unit) {
+fun ProductCard(
+    product: Product,
+    onAddClick: () -> Unit,
+    onClick: () -> Unit
+) {
     var isFav by remember { mutableStateOf(false) }
+
 
     Surface(
         modifier = Modifier
@@ -186,10 +191,10 @@ fun ProductCard(product: Product, onClick: () -> Unit) {
                             .size(28.dp)
                             .clip(RoundedCornerShape(8.dp))
                             .background(Brush.linearGradient(listOf(BrandOrange, BrandDeep)))
-                            .clickable { },
+                            .clickable { onAddClick() }, // Gọi hàm onAddClick ở đây
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(Icons.Default.Add, "Thêm vào giỏ", tint = Color.White, modifier = Modifier.size(18.dp))
+                        Icon(Icons.Default.Add, "Thêm", tint = Color.White, modifier = Modifier.size(18.dp))
                     }
                 }
             }

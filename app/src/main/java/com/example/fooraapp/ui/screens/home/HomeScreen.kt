@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.fooraapp.ui.screens.home.components.ProductCard
-import com.example.fooraapp.ui.theme.*   // ← import màu từ theme
+import com.example.fooraapp.ui.components.ProductCard
+import com.example.fooraapp.ui.theme.*
 import com.example.fooraapp.viewmodel.HomeViewModel
-import com.example.fooraapp.model.Product
+import com.example.fooraapp.data.model.Product
 
 data class FoodCategory(val emoji: String, val name: String)
 
@@ -47,7 +47,8 @@ private val categories = listOf(
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    homeViewModel: HomeViewModel = viewModel()
+    homeViewModel: HomeViewModel = viewModel(),
+    cartViewModel: com.example.fooraapp.viewmodel.CartViewModel = viewModel() // THÊM DÒNG NÀY
 ) {
     var searchQuery      by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Cơm") }
@@ -106,10 +107,22 @@ fun HomeScreen(
                 verticalArrangement   = Arrangement.spacedBy(12.dp),
                 modifier              = Modifier.fillMaxSize()
             ) {
-                items(items = homeViewModel.productList) { product: Product ->
-                    ProductCard(product = product) {
-                        navController.navigate("detail_screen/${product.id}")
-                    }
+                // Trong HomeScreen.kt
+                items(items = homeViewModel.productList) { product ->
+                    ProductCard(
+                        product = product,
+                        onAddClick = {
+                            cartViewModel.addProductToCart(product)
+                        },
+                        onClick = {
+                            // Kiểm tra: Nếu có ID thì mới chuyển trang, tránh bị crash
+                            if (product.id.isNotEmpty()) {
+                                navController.navigate("detail_screen/${product.id}")
+                            } else {
+                                println("Lỗi: Món ăn này chưa có ID!")
+                            }
+                        }
+                    )
                 }
                 item { Spacer(Modifier.height(8.dp)) }
                 item { Spacer(Modifier.height(8.dp)) }

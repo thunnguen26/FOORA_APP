@@ -1,9 +1,10 @@
-package com.example.fooraapp.model
+package com.example.fooraapp.data.model
 
+import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.PropertyName
 
 data class Product(
-    val id          : String       = "",
+    var id          : String       = "",
     val name        : String       = "",
     val description : String       = "",
     val price       : Long         = 0,

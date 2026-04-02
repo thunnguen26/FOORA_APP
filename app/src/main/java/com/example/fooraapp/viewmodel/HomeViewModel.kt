@@ -2,11 +2,12 @@ package com.example.fooraapp.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import com.example.fooraapp.model.Product          // ← sửa dòng này
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.fooraapp.data.model.Product
+import com.example.fooraapp.data.repository.ProductRepository // Import Repository mới
 
 class HomeViewModel : ViewModel() {
-    private val db = FirebaseFirestore.getInstance()
+    // 1. Khởi tạo Repository thay vì gọi trực tiếp Firestore
+    private val repository = ProductRepository()
 
     var productList = mutableStateListOf<Product>()
         private set
@@ -16,11 +17,8 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun fetchProducts() {
-        db.collection("Products").addSnapshotListener { value, error ->
-            if (error != null) return@addSnapshotListener
-
-            val list = value?.toObjects(Product::class.java) ?: emptyList()
-
+        // 2. Nhờ Repository "đi lấy" dữ liệu hộ
+        repository.getAllProducts { list ->
             productList.clear()
             productList.addAll(list)
         }
